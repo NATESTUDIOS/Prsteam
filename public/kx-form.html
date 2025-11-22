@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KOFA-X Features | Share Your Ideas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #f0f9ff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --white: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, var(--primary), #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        .form-container {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            transition: transform 0.3s ease;
+        }
+
+        .form-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .form-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .form-description {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        .required::after {
+            content: " *";
+            color: var(--error);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .form-control.error {
+            border-color: var(--error);
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .form-hint i {
+            font-size: 0.8rem;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .error-message i {
+            font-size: 0.8rem;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            padding: 16px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .loading {
+            display: none;
+        }
+
+        .success-message {
+            background-color: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .success-message i {
+            color: var(--success);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .success-message h3 {
+            color: var(--success);
+            margin-bottom: 10px;
+        }
+
+        .form-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            border-top: 1px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background-color: var(--border);
+            border-radius: 2px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .character-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .notification {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid var(--warning);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification i {
+            color: var(--warning);
+            font-size: 1.2rem;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .notification-text {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .user-feature {
+            background: var(--secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            border-left: 4px solid var(--primary);
+            display: none;
+        }
+
+        .user-feature-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .user-feature-name {
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .user-feature-description {
+            color: var(--text);
+            margin-bottom: 10px;
+        }
+
+        .user-feature-reason {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 25px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .form-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-lightbulb"></i>
+                KOFA-X
+            </div>
+            <p class="tagline">Help shape the future of KOFA-X by sharing your ideas and suggestions</p>
+        </div>
+
+        <div class="form-container">
+            <div class="progress-bar">
+                <div class="progress" id="form-progress"></div>
+            </div>
+
+            <div class="form-header">
+                <h1 class="form-title">Feature Request Form</h1>
+                <p class="form-description">Tell us what you'd like to see in KOFA-X and why it's important</p>
+            </div>
+
+            <div class="notification">
+                <i class="fas fa-exclamation-circle"></i>
+                <div class="notification-content">
+                    <div class="notification-title">Your Ideas Matter</div>
+                    <div class="notification-text">All submitted features are reviewed by our team. You'll be notified when your feature is approved.</div>
+                </div>
+            </div>
+
+            <form id="kofa-form">
+                <div class="form-group">
+                    <label for="name" class="form-label required">Your Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Enter your full name" required>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Please provide your real name so we can follow up if needed
+                    </div>
+                    <div class="error-message" id="name-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="whatsapp" class="form-label required">WhatsApp Number</label>
+                    <input type="number" id="whatsapp" class="form-control" placeholder="Enter your WhatsApp number" required>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Include country code (e.g., +1 for US/Canada)
+                    </div>
+                    <div class="error-message" id="whatsapp-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="feature" class="form-label required">Feature Idea</label>
+                    <textarea id="feature" class="form-control" placeholder="Describe the feature you'd like to see in KOFA-X" required></textarea>
+                    <div class="character-count">
+                        <span id="feature-count">0</span>/500 characters
+                    </div>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Be as specific as possible about what you want to see added
+                    </div>
+                    <div class="error-message" id="feature-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="reason" class="form-label required">Reason for Feature</label>
+                    <textarea id="reason" class="form-control" placeholder="Explain why this feature is important and how it would benefit KOFA-X" required></textarea>
+                    <div class="character-count">
+                        <span id="reason-count">0</span>/500 characters
+                    </div>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Help us understand the value this feature would bring
+                    </div>
+                    <div class="error-message" id="reason-error"></div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="submit-btn">
+                    <span class="btn-text">Submit Feature Request</span>
+                    <div class="loading" id="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </button>
+
+                <div class="success-message" id="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Thank You!</h3>
+                    <p>Your feature request has been submitted successfully. We appreciate your contribution to KOFA-X!</p>
+                </div>
+
+                <div class="user-feature" id="user-feature">
+                    <div class="user-feature-header">
+                        <div>
+                            <div class="user-feature-name" id="user-feature-name">Feature Name</div>
+                        </div>
+                    </div>
+                    <div class="user-feature-description" id="user-feature-description">Feature description will appear here</div>
+                    <div class="user-feature-reason" id="user-feature-reason">Reason for this feature</div>
+                </div>
+            </form>
+
+            <div class="form-footer">
+                <p>Your ideas help shape the future of KOFA-X. We review every submission carefully.</p>
+                <p>PRST Forms | Responses limited to 100</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('kofa-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const btnText = submitBtn.querySelector('.btn-text');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const successMessage = document.getElementById('success-message');
+            const formProgress = document.getElementById('form-progress');
+            const userFeature = document.getElementById('user-feature');
+            
+            // Character counters
+            const featureTextarea = document.getElementById('feature');
+            const reasonTextarea = document.getElementById('reason');
+            const featureCount = document.getElementById('feature-count');
+            const reasonCount = document.getElementById('reason-count');
+            
+            // Update character counters
+            featureTextarea.addEventListener('input', function() {
+                featureCount.textContent = this.value.length;
+            });
+            
+            reasonTextarea.addEventListener('input', function() {
+                reasonCount.textContent = this.value.length;
+            });
+            
+            // Update progress bar as user fills the form
+            const formInputs = form.querySelectorAll('input, textarea');
+            formInputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+                input.addEventListener('change', updateProgress);
+            });
+            
+            function updateProgress() {
+                let filledFields = 0;
+                formInputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        filledFields++;
+                    }
+                });
+                
+                const progress = (filledFields / formInputs.length) * 100;
+                formProgress.style.width = `${progress}%`;
+            }
+            
+            // Form submission
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Reset errors
+                clearErrors();
+                
+                // Validate form
+                if (!validateForm()) {
+                    return;
+                }
+                
+                // Show loading state
+                btnText.textContent = 'Submitting...';
+                loadingSpinner.style.display = 'block';
+                submitBtn.disabled = true;
+                
+                try {
+                    // Prepare data according to API requirements
+                    const formData = {
+                        name: document.getElementById('name').value.trim(),
+                        data: {
+                            "name": document.getElementById('name').value.trim(),
+                            "WhatsApp number": document.getElementById('whatsapp').value.trim(),
+                            "Write down what should be in KOFA-X": document.getElementById('feature').value.trim(),
+                            "what you wrote we should add to KOFA-X, write down a reason they need to be added": document.getElementById('reason').value.trim()
+                        }
+                    };
+                    
+                    // Submit to API
+                    const response = await submitResponse('form_3853b7b2', formData.name, formData.data);
+                    
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    
+                    // Show user's submitted feature
+                    document.getElementById('user-feature-name').textContent = document.getElementById('feature').value.trim();
+                    document.getElementById('user-feature-description').textContent = document.getElementById('reason').value.trim();
+                    document.getElementById('user-feature-reason').textContent = `Submitted by ${document.getElementById('name').value.trim()}`;
+                    userFeature.style.display = 'block';
+                    
+                    // Scroll to success message
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    showError('submit-btn', 'Failed to submit form. Please try again.');
+                } finally {
+                    // Reset button state
+                    btnText.textContent = 'Submit Feature Request';
+                    loadingSpinner.style.display = 'none';
+                    submitBtn.disabled = false;
+                }
+            });
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                
+                // Name validation
+                const name = document.getElementById('name').value.trim();
+                if (!name) {
+                    showError('name', 'Please enter your name');
+                    isValid = false;
+                }
+                
+                // WhatsApp validation
+                const whatsapp = document.getElementById('whatsapp').value.trim();
+                if (!whatsapp) {
+                    showError('whatsapp', 'Please enter your WhatsApp number');
+                    isValid = false;
+                } else if (isNaN(whatsapp) || whatsapp.length < 10) {
+                    showError('whatsapp', 'Please enter a valid phone number');
+                    isValid = false;
+                }
+                
+                // Feature validation
+                const feature = document.getElementById('feature').value.trim();
+                if (!feature) {
+                    showError('feature', 'Please describe your feature idea');
+                    isValid = false;
+                } else if (feature.length > 500) {
+                    showError('feature', 'Feature description must be 500 characters or less');
+                    isValid = false;
+                }
+                
+                // Reason validation
+                const reason = document.getElementById('reason').value.trim();
+                if (!reason) {
+                    showError('reason', 'Please explain why this feature is important');
+                    isValid = false;
+                } else if (reason.length > 500) {
+                    showError('reason', 'Reason must be 500 characters or less');
+                    isValid = false;
+                }
+                
+                return isValid;
+            }
+            
+            // Error handling functions
+            function showError(fieldId, message) {
+                const errorElement = document.getElementById(`${fieldId}-error`);
+                const inputElement = document.getElementById(fieldId);
+                
+                if (errorElement && inputElement) {
+                    errorElement.textContent = message;
+                    inputElement.classList.add('error');
+                }
+            }
+            
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error-message');
+                const inputElements = document.querySelectorAll('.form-control');
+                
+                errorElements.forEach(el => {
+                    el.textContent = '';
+                });
+                
+                inputElements.forEach(el => {
+                    el.classList.remove('error');
+                });
+            }
+            
+            // API submission function
+            async function submitResponse(formId, name, data) {
+                // Format data according to API requirements
+                const formattedData = {};
+                
+                for (const [key, value] of Object.entries(data)) {
+                    // Sanitize the key for API
+                    const sanitizedKey = key.replace(/[^a-zA-Z0-9]/g, '_');
+                    formattedData[sanitizedKey] = {
+                        question: key,
+                        answer: value
+                    };
+                }
+                
+                const response = await fetch(`https://collabo-studios.onrender.com/api/forms/${formId}/responses`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ 
+                        name: name, 
+                        data: formattedData 
+                    }),
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                return await response.json();
+            }
+            
+            // Initialize progress bar
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
