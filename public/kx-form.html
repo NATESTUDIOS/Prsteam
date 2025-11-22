@@ -330,11 +330,11 @@
             .form-container {
                 padding: 25px;
             }
-            
+
             .logo {
                 font-size: 2rem;
             }
-            
+
             .form-title {
                 font-size: 1.5rem;
             }
@@ -378,6 +378,16 @@
                         Please provide your real name so we can follow up if needed
                     </div>
                     <div class="error-message" id="name-error"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label required">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Enter your email address" required>
+                    <div class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        We'll only use this to contact you about your feature request
+                    </div>
+                    <div class="error-message" id="email-error"></div>
                 </div>
 
                 <div class="form-group">
@@ -442,7 +452,7 @@
 
             <div class="form-footer">
                 <p>Your ideas help shape the future of KOFA-X. We review every submission carefully.</p>
-                <p>PRST Forms | Responses limited to 100</p>
+                <p>Form ID: form_3853b7b2 | Responses limited to 100</p>
             </div>
         </div>
     </div>
@@ -456,29 +466,29 @@
             const successMessage = document.getElementById('success-message');
             const formProgress = document.getElementById('form-progress');
             const userFeature = document.getElementById('user-feature');
-            
+
             // Character counters
             const featureTextarea = document.getElementById('feature');
             const reasonTextarea = document.getElementById('reason');
             const featureCount = document.getElementById('feature-count');
             const reasonCount = document.getElementById('reason-count');
-            
+
             // Update character counters
             featureTextarea.addEventListener('input', function() {
                 featureCount.textContent = this.value.length;
             });
-            
+
             reasonTextarea.addEventListener('input', function() {
                 reasonCount.textContent = this.value.length;
             });
-            
+
             // Update progress bar as user fills the form
             const formInputs = form.querySelectorAll('input, textarea');
             formInputs.forEach(input => {
                 input.addEventListener('input', updateProgress);
                 input.addEventListener('change', updateProgress);
             });
-            
+
             function updateProgress() {
                 let filledFields = 0;
                 formInputs.forEach(input => {
@@ -486,32 +496,33 @@
                         filledFields++;
                     }
                 });
-                
+
                 const progress = (filledFields / formInputs.length) * 100;
                 formProgress.style.width = `${progress}%`;
             }
-            
+
             // Form submission
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                
+
                 // Reset errors
                 clearErrors();
-                
+
                 // Validate form
                 if (!validateForm()) {
                     return;
                 }
-                
+
                 // Show loading state
                 btnText.textContent = 'Submitting...';
                 loadingSpinner.style.display = 'block';
                 submitBtn.disabled = true;
-                
+
                 try {
-                    // Prepare data according to API requirements
+                    // Prepare data according to API requirements - SIMPLE KEY-VALUE PAIRS
                     const formData = {
                         name: document.getElementById('name').value.trim(),
+                        email: document.getElementById('email').value.trim(),
                         data: {
                             "name": document.getElementById('name').value.trim(),
                             "WhatsApp number": document.getElementById('whatsapp').value.trim(),
@@ -519,22 +530,30 @@
                             "what you wrote we should add to KOFA-X, write down a reason they need to be added": document.getElementById('reason').value.trim()
                         }
                     };
-                    
-                    // Submit to API
-                    const response = await submitResponse('form_3853b7b2', formData.name, formData.data);
-                    
+
+                    console.log('Submitting data:', formData);
+
+                    // Submit to API using the correct format
+                    const response = await submitResponse('form_3853b7b2', formData.name, formData.email, formData.data);
+
                     // Show success message
                     successMessage.style.display = 'block';
-                    
+
                     // Show user's submitted feature
                     document.getElementById('user-feature-name').textContent = document.getElementById('feature').value.trim();
                     document.getElementById('user-feature-description').textContent = document.getElementById('reason').value.trim();
                     document.getElementById('user-feature-reason').textContent = `Submitted by ${document.getElementById('name').value.trim()}`;
                     userFeature.style.display = 'block';
-                    
+
+                    // Clear form
+                    form.reset();
+                    formProgress.style.width = '0%';
+                    featureCount.textContent = '0';
+                    reasonCount.textContent = '0';
+
                     // Scroll to success message
                     successMessage.scrollIntoView({ behavior: 'smooth' });
-                    
+
                 } catch (error) {
                     console.error('Submission error:', error);
                     showError('submit-btn', 'Failed to submit form. Please try again.');
@@ -545,18 +564,29 @@
                     submitBtn.disabled = false;
                 }
             });
-            
+
             // Form validation
             function validateForm() {
                 let isValid = true;
-                
+
                 // Name validation
                 const name = document.getElementById('name').value.trim();
                 if (!name) {
                     showError('name', 'Please enter your name');
                     isValid = false;
                 }
-                
+
+                // Email validation
+                const email = document.getElementById('email').value.trim();
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email) {
+                    showError('email', 'Please enter your email address');
+                    isValid = false;
+                } else if (!emailRegex.test(email)) {
+                    showError('email', 'Please enter a valid email address');
+                    isValid = false;
+                }
+
                 // WhatsApp validation
                 const whatsapp = document.getElementById('whatsapp').value.trim();
                 if (!whatsapp) {
@@ -566,7 +596,7 @@
                     showError('whatsapp', 'Please enter a valid phone number');
                     isValid = false;
                 }
-                
+
                 // Feature validation
                 const feature = document.getElementById('feature').value.trim();
                 if (!feature) {
@@ -576,7 +606,7 @@
                     showError('feature', 'Feature description must be 1000 characters or less');
                     isValid = false;
                 }
-                
+
                 // Reason validation
                 const reason = document.getElementById('reason').value.trim();
                 if (!reason) {
@@ -586,64 +616,69 @@
                     showError('reason', 'Reason must be 1000 characters or less');
                     isValid = false;
                 }
-                
+
                 return isValid;
             }
-            
+
             // Error handling functions
             function showError(fieldId, message) {
                 const errorElement = document.getElementById(`${fieldId}-error`);
                 const inputElement = document.getElementById(fieldId);
-                
+
                 if (errorElement && inputElement) {
                     errorElement.textContent = message;
                     inputElement.classList.add('error');
                 }
             }
-            
+
             function clearErrors() {
                 const errorElements = document.querySelectorAll('.error-message');
                 const inputElements = document.querySelectorAll('.form-control');
-                
+
                 errorElements.forEach(el => {
                     el.textContent = '';
                 });
-                
+
                 inputElements.forEach(el => {
                     el.classList.remove('error');
                 });
             }
-            
-            // API submission function
-            async function submitResponse(formId, name, data) {
-                // Format data according to API requirements
+
+            // API submission function - CORRECTED VERSION
+            async function submitResponse(formId, name, email, data) {
+                // Format data according to API requirements - SIMPLE KEY-VALUE PAIRS
+                // The API expects the data object to have keys that match field labels exactly
                 const formattedData = {};
                 
                 for (const [key, value] of Object.entries(data)) {
-                    // Sanitize the key for API
-                    const sanitizedKey = key.replace(/[^a-zA-Z0-9]/g, '_');
-                    formattedData[sanitizedKey] = {
-                        question: key,
-                        answer: value
-                    };
+                    formattedData[key] = value;
                 }
-                
+
+                console.log('Final submission data:', {
+                    name: name,
+                    email: email,
+                    data: formattedData
+                });
+
                 const response = await fetch(`https://collabo-studios.onrender.com/api/forms/${formId}/responses`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ 
                         name: name, 
+                        email: email,
                         data: formattedData 
                     }),
                 });
-                
+
                 if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error Response:', errorText);
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                
+
                 return await response.json();
             }
-            
+
             // Initialize progress bar
             updateProgress();
         });
