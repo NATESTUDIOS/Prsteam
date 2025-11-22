@@ -394,7 +394,7 @@
                     <label for="feature" class="form-label required">Feature Idea</label>
                     <textarea id="feature" class="form-control" placeholder="Describe the feature you'd like to see in KOFA-X" required></textarea>
                     <div class="character-count">
-                        <span id="feature-count">0</span>/500 characters
+                        <span id="feature-count">0</span>/1000 characters
                     </div>
                     <div class="form-hint">
                         <i class="fas fa-info-circle"></i>
@@ -407,7 +407,7 @@
                     <label for="reason" class="form-label required">Reason for Feature</label>
                     <textarea id="reason" class="form-control" placeholder="Explain why this feature is important and how it would benefit KOFA-X" required></textarea>
                     <div class="character-count">
-                        <span id="reason-count">0</span>/500 characters
+                        <span id="reason-count">0</span>/1000 characters
                     </div>
                     <div class="form-hint">
                         <i class="fas fa-info-circle"></i>
@@ -572,8 +572,8 @@
                 if (!feature) {
                     showError('feature', 'Please describe your feature idea');
                     isValid = false;
-                } else if (feature.length > 500) {
-                    showError('feature', 'Feature description must be 500 characters or less');
+                } else if (feature.length > 1000) {
+                    showError('feature', 'Feature description must be 1000 characters or less');
                     isValid = false;
                 }
                 
@@ -582,8 +582,8 @@
                 if (!reason) {
                     showError('reason', 'Please explain why this feature is important');
                     isValid = false;
-                } else if (reason.length > 500) {
-                    showError('reason', 'Reason must be 500 characters or less');
+                } else if (reason.length > 1000) {
+                    showError('reason', 'Reason must be 1000 characters or less');
                     isValid = false;
                 }
                 
