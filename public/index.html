@@ -1,764 +1,678 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRST - Problem Solving Team</title>
+    <title>Campus PRST - Problem Resolution using Software & Technology</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Reset and Base Styles */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         :root {
-            --primary: #2c3e50;
-            --secondary: #3498db;
-            --accent: #e74c3c;
-            --light: #ecf0f1;
-            --dark: #2c3e50;
-            --text: #333;
-            --text-light: #7f8c8d;
+            --primary: #8a2be2;
+            --primary-dark: #6a1cb0;
+            --secondary: #00d4ff;
+            --dark-bg: #0a0a15;
+            --darker-bg: #05050c;
+            --card-bg: rgba(20, 20, 40, 0.7);
+            --text: #f0f0f0;
+            --text-muted: #a0a0c0;
+            --accent: #ff4d8d;
+            --success: #00ff9d;
         }
-        
+
         body {
-            line-height: 1.6;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
             color: var(--text);
-            background-color: #f9f9f9;
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 15px;
-        }
-        
-        /* Typography */
-        h1, h2, h3, h4 {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-        
-        h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-        }
-        
-        h2 {
-            font-size: 2rem;
+            overflow-x: hidden;
+            min-height: 100vh;
             position: relative;
-            padding-bottom: 10px;
         }
-        
-        h2:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 60px;
-            height: 3px;
-            background-color: var(--secondary);
-        }
-        
-        p {
-            margin-bottom: 1rem;
-        }
-        
-        /* Header & Navigation */
-        header {
-            background-color: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
+
+        /* Starry background */
+        #stars-container {
+            position: fixed;
             top: 0;
-            z-index: 1000;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            overflow: hidden;
         }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0;
-            color: var(--primary);
-        }
-        
-        .logo span {
-            color: var(--secondary);
-        }
-        
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav ul li {
-            margin-left: 2rem;
-        }
-        
-        nav ul li a {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav ul li a:hover {
-            color: var(--secondary);
-        }
-        
-        .mobile-menu {
-            display: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            padding: 5rem 0;
-            text-align: center;
-        }
-        
-        .hero h1 {
-            color: white;
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 800px;
-            margin: 0 auto 2rem;
-        }
-        
-        .btn {
-            display: inline-block;
-            background-color: var(--accent);
-            color: white;
-            padding: 0.8rem 1.5rem;
-            border-radius: 4px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background-color: #c0392b;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            border: 2px solid white;
-            margin-left: 1rem;
-        }
-        
-        .btn-secondary:hover {
+
+        .star {
+            position: absolute;
             background-color: white;
-            color: var(--primary);
+            border-radius: 50%;
+            animation: twinkle 5s infinite;
         }
-        
-        /* Sections */
-        section {
-            padding: 5rem 0;
+
+        /* Dark blur overlay */
+        #dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 12, 0.85);
+            backdrop-filter: blur(3px);
+            z-index: -2;
         }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-        
-        .section-title h2:after {
+
+        /* Moon */
+        #moon {
+            position: fixed;
+            top: 120%;
             left: 50%;
             transform: translateX(-50%);
-        }
-        
-        /* About Section */
-        .about-content {
-            display: flex;
-            align-items: center;
-            gap: 3rem;
-        }
-        
-        .about-text {
-            flex: 1;
-        }
-        
-        .about-image {
-            flex: 1;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        
-        .about-image img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        
-        /* Mission Section */
-        .mission {
-            background-color: var(--light);
-        }
-        
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .mission-card {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .mission-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .mission-card i {
-            font-size: 2.5rem;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-        
-        /* Projects Section */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-        
-        .project-card {
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-10px);
-        }
-        
-        .project-image {
-            height: 200px;
-            background-color: var(--light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-light);
-        }
-        
-        .project-content {
-            padding: 1.5rem;
-        }
-        
-        .project-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin: 1rem 0;
-        }
-        
-        .tag {
-            background-color: var(--light);
-            color: var(--primary);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-        }
-        
-        /* Team Section */
-        .team {
-            background-color: var(--light);
-        }
-        
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-        }
-        
-        .team-member {
-            text-align: center;
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .member-photo {
             width: 150px;
             height: 150px;
+            background: radial-gradient(circle at 30% 30%, #f5f3ce 10%, #d8d7b5 40%, #a0a0a0 100%);
             border-radius: 50%;
-            background-color: var(--light);
-            margin: 0 auto 1rem;
+            box-shadow: 0 0 60px rgba(245, 243, 206, 0.5);
+            z-index: -1;
+            animation: moonrise 3s ease-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        .moon-crater {
+            position: absolute;
+            background-color: rgba(180, 180, 160, 0.6);
+            border-radius: 50%;
+        }
+
+        /* Main content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 40px 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        #main-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 900;
+            text-align: center;
+            letter-spacing: 0.1em;
+            margin-top: 60px;
+            opacity: 0;
+            animation: title-rise 2s ease-out forwards;
+            animation-delay: 2.5s;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(138, 43, 226, 0.3);
+        }
+
+        .tagline {
+            font-size: 1.4rem;
+            text-align: center;
+            margin: 20px auto 40px;
+            max-width: 800px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+            animation-delay: 3.5s;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        /* Sections */
+        .section {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 60px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 1s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 4s; }
+        .section:nth-child(2) { animation-delay: 4.2s; }
+        .section:nth-child(3) { animation-delay: 4.4s; }
+        .section:nth-child(4) { animation-delay: 4.6s; }
+        .section:nth-child(5) { animation-delay: 4.8s; }
+        .section:nth-child(6) { animation-delay: 5s; }
+
+        .section-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--text-light);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary);
         }
-        
-        .member-skills {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        /* Join Section */
-        .join-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-        }
-        
-        .join-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        textarea {
-            height: 150px;
-            resize: vertical;
-        }
-        
-        /* Footer */
-        footer {
-            background-color: var(--primary);
-            color: white;
-            padding: 3rem 0 1rem;
-        }
-        
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .footer-column h3 {
-            color: white;
-            margin-bottom: 1.5rem;
-            font-size: 1.2rem;
-        }
-        
-        .footer-column ul {
-            list-style: none;
-        }
-        
-        .footer-column ul li {
-            margin-bottom: 0.8rem;
-        }
-        
-        .footer-column ul li a {
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-column ul li a:hover {
-            color: white;
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            transition: color 0.3s;
-        }
-        
-        .social-links a:hover {
+
+        .section-icon {
+            font-size: 2rem;
+            margin-right: 15px;
             color: var(--secondary);
         }
-        
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            color: #bdc3c7;
-            font-size: 0.9rem;
+
+        .section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--secondary);
         }
-        
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 1rem;
-                flex-direction: column;
-            }
-            
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-            
-            .mobile-menu {
-                display: block;
-                position: absolute;
-                top: 1rem;
-                right: 1rem;
-            }
-            
-            .hero h1 {
-                font-size: 2.2rem;
-            }
-            
-            .about-content {
-                flex-direction: column;
-            }
-            
-            .join-form {
+
+        /* PRST acronym */
+        .acronym-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+
+        .acronym-letter {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .acronym-letter:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(138, 43, 226, 0.4);
+        }
+
+        .letter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: white;
+        }
+
+        .letter-meaning {
+            font-size: 0.9rem;
+            margin-top: 5px;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        /* Teams */
+        .teams-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .teams-container {
                 grid-template-columns: 1fr;
             }
         }
+
+        .team-card {
+            background: rgba(30, 30, 60, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            border-top: 5px solid var(--accent);
+            transition: transform 0.3s;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-card:nth-child(2) {
+            border-top-color: var(--success);
+        }
+
+        .team-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .team-card:nth-child(2) .team-title {
+            color: var(--success);
+        }
+
+        .roles-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .role-item {
+            background: rgba(138, 43, 226, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border-left: 3px solid var(--primary);
+        }
+
+        /* Examples grid */
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .example-item {
+            background: rgba(30, 30, 60, 0.6);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid var(--secondary);
+            transition: transform 0.3s;
+        }
+
+        .example-item:hover {
+            transform: translateY(-5px);
+            background: rgba(40, 40, 80, 0.7);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 1px solid rgba(138, 43, 226, 0.3);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes moonrise {
+            0% {
+                top: 120%;
+                opacity: 0;
+            }
+            100% {
+                top: 10%;
+                opacity: 1;
+            }
+        }
+
+        @keyframes title-rise {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 30px 20px;
+            }
+            
+            .teams-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .acronym-letter {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .letter {
+                font-size: 2.8rem;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <h1>PR<span>ST</span></h1>
-            </div>
-            <div class="mobile-menu">
-                <i class="fas fa-bars"></i>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#mission">Mission</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#team">Team</a></li>
-                    <li><a href="#join" class="btn">Join Us</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container">
-            <h1>Problem Solving Team</h1>
-            <p>A community of skilled individuals working together to solve problems in our communities through collaborative projects.</p>
-            <a href="#join" class="btn">Join Our Team</a>
-            <a href="#projects" class="btn btn-secondary">View Projects</a>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <div class="section-title">
-                <h2>About PRST</h2>
-            </div>
-            <div class="about-content">
-                <div class="about-text">
-                    <p><strong>P.R.S.T</strong> is an abbreviation of <strong>Problem Solving Team</strong> - a community consisting of individuals with diverse skillsets who come together to put their skills to practice by working on projects that solve problems in the community around them.</p>
-                    <p>The initiative was co-founded to address the reality that there are many skilled people waiting for their next gig instead of also putting their skills to good use in their communities.</p>
-                    <p>We believe that by bringing together talented individuals from different backgrounds, we can create innovative solutions to local challenges while building meaningful connections and gaining valuable experience.</p>
+    <!-- Starry background -->
+    <div id="stars-container"></div>
+    
+    <!-- Dark blur overlay -->
+    <div id="dark-overlay"></div>
+    
+    <!-- Moon -->
+    <div id="moon"></div>
+    
+    <!-- Main content -->
+    <div class="container">
+        <header>
+            <h1 id="main-title">CAMPUS PRST</h1>
+            <p class="tagline">A student-driven innovation and solutions team</p>
+        </header>
+        
+        <main>
+            <!-- Introduction section -->
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-icon">🚀</div>
+                    <h2 class="section-title">About Campus PRST</h2>
                 </div>
-                <div class="about-image">
-                    <!-- Placeholder for an image -->
-                    <div style="background-color: #3498db; height: 100%; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
-                        Community Collaboration Image
+                <p>Campus PRST is a collective of students from different faculties, backgrounds, and skillsets who come together with one mission:</p>
+                <p style="margin: 20px 0; font-size: 1.2rem; color: var(--secondary); font-weight: 600;">Solve real problems on campus using software and technology.</p>
+                <p>PRST isn't just a team — it's a movement inside the school where talented individuals combine creativity, technical knowledge, and practical problem-solving to build solutions that genuinely help students, staff, and the entire institution.</p>
+                
+                <div class="acronym-container">
+                    <div class="acronym-letter">
+                        <div class="letter">P</div>
+                        <div class="letter-meaning">Problem</div>
+                    </div>
+                    <div class="acronym-letter">
+                        <div class="letter">R</div>
+                        <div class="letter-meaning">Resolution</div>
+                    </div>
+                    <div class="acronym-letter">
+                        <div class="letter">S</div>
+                        <div class="letter-meaning">Software</div>
+                    </div>
+                    <div class="acronym-letter">
+                        <div class="letter">T</div>
+                        <div class="letter-meaning">Technology</div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mission Section -->
-    <section class="mission" id="mission">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Mission & Values</h2>
-            </div>
-            <div class="mission-grid">
-                <div class="mission-card">
-                    <i class="fas fa-hands-helping"></i>
-                    <h3>Community Impact</h3>
-                    <p>We focus on identifying and solving real problems that affect our local communities, creating tangible positive change.</p>
+                
+                <p style="text-align: center; font-size: 1.1rem; margin-top: 20px;">
+                    <strong>The idea is simple:</strong><br>
+                    Identify problems → Propose solutions → Build innovations → Improve campus life
+                </p>
+            </section>
+            
+            <!-- How it works section -->
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-icon">🧩</div>
+                    <h2 class="section-title">How Campus PRST Works</h2>
                 </div>
-                <div class="mission-card">
-                    <i class="fas fa-users"></i>
-                    <h3>Collaboration</h3>
-                    <p>We bring together people with diverse skills and backgrounds to work on projects that no single person could accomplish alone.</p>
-                </div>
-                <div class="mission-card">
-                    <i class="fas fa-lightbulb"></i>
-                    <h3>Skill Application</h3>
-                    <p>We provide a platform for skilled individuals to apply their talents to meaningful projects beyond their regular work.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Projects</h2>
-            </div>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        Project Image
-                    </div>
-                    <div class="project-content">
-                        <h3>Community Food Share</h3>
-                        <p>A platform connecting restaurants with surplus food to local shelters and food banks.</p>
-                        <div class="project-tags">
-                            <span class="tag">Web Development</span>
-                            <span class="tag">Logistics</span>
-                            <span class="tag">Community</span>
+                <p>Campus PRST is divided into two specialized divisions, working together when needed:</p>
+                
+                <div class="teams-container">
+                    <!-- Software Team -->
+                    <div class="team-card">
+                        <h3 class="team-title">Software Team (PRST SoftLab)</h3>
+                        <p>This team focuses on digital solutions.</p>
+                        
+                        <h4 style="margin-top: 20px; color: var(--accent);">Roles Include:</h4>
+                        <div class="roles-list">
+                            <div class="role-item">Developers (Web, Mobile, Backend)</div>
+                            <div class="role-item">UI/UX Designers</div>
+                            <div class="role-item">Data analysts</div>
+                            <div class="role-item">AI/ML Engineers</div>
+                            <div class="role-item">Cybersecurity/DevOps learners</div>
+                            <div class="role-item">Product managers</div>
+                            <div class="role-item">Technical writers</div>
                         </div>
-                        <a href="#" class="btn">Learn More</a>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        Project Image
-                    </div>
-                    <div class="project-content">
-                        <h3>Digital Literacy Program</h3>
-                        <p>Teaching essential digital skills to seniors and underserved community members.</p>
-                        <div class="project-tags">
-                            <span class="tag">Education</span>
-                            <span class="tag">Volunteering</span>
-                            <span class="tag">Technology</span>
+                        
+                        <h4 style="margin-top: 20px; color: var(--accent);">What they build:</h4>
+                        <div class="roles-list">
+                            <div class="role-item">Websites & mobile apps</div>
+                            <div class="role-item">Campus tools</div>
+                            <div class="role-item">Bots, AI assistants, automations</div>
+                            <div class="role-item">Platforms for departments</div>
+                            <div class="role-item">APIs, dashboards, management systems</div>
                         </div>
-                        <a href="#" class="btn">Learn More</a>
+                        
+                        <p style="margin-top: 20px; padding: 15px; background: rgba(0, 212, 255, 0.1); border-radius: 10px; border-left: 4px solid var(--secondary);">
+                            <strong>Goal:</strong> Solve campus problems with software — fast, scalable, modern.
+                        </p>
                     </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">
-                        Project Image
-                    </div>
-                    <div class="project-content">
-                        <h3>Local Business Support</h3>
-                        <p>Developing digital marketing strategies for small businesses affected by economic challenges.</p>
-                        <div class="project-tags">
-                            <span class="tag">Marketing</span>
-                            <span class="tag">Business</span>
-                            <span class="tag">Strategy</span>
+                    
+                    <!-- Hardware Team -->
+                    <div class="team-card">
+                        <h3 class="team-title">Hardware Team (PRST HardLab)</h3>
+                        <p>This team handles physical, engineering, and device-based solutions.</p>
+                        
+                        <h4 style="margin-top: 20px; color: var(--success);">Roles Include:</h4>
+                        <div class="roles-list">
+                            <div class="role-item">Computer engineering students</div>
+                            <div class="role-item">Electrical/electronic engineering</div>
+                            <div class="role-item">Mechanical engineering</div>
+                            <div class="role-item">Network engineers</div>
+                            <div class="role-item">IoT/robotics enthusiasts</div>
                         </div>
-                        <a href="#" class="btn">Learn More</a>
+                        
+                        <h4 style="margin-top: 20px; color: var(--success);">What they build:</h4>
+                        <div class="roles-list">
+                            <div class="role-item">Smart devices</div>
+                            <div class="role-item">Embedded systems (Arduino, Raspberry Pi)</div>
+                            <div class="role-item">Campus utilities</div>
+                            <div class="role-item">Robotics projects</div>
+                            <div class="role-item">Hardware-software integrated solutions</div>
+                        </div>
+                        
+                        <p style="margin-top: 20px; padding: 15px; background: rgba(0, 255, 157, 0.1); border-radius: 10px; border-left: 4px solid var(--success);">
+                            <strong>Goal:</strong> Turn physical problems into innovative tech-enabled products.
+                        </p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Team Section -->
-    <section class="team" id="team">
-        <div class="container">
-            <div class="section-title">
-                <h2>Our Team</h2>
-            </div>
-            <div class="team-grid">
-                <div class="team-member">
-                    <div class="member-photo">
-                        Member Photo
+            </section>
+            
+            <!-- Why powerful section -->
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-icon">⭐</div>
+                    <h2 class="section-title">Why Campus PRST is Powerful</h2>
+                </div>
+                <div class="examples-grid">
+                    <div class="example-item">
+                        <h4>Unites Talent Across Faculties</h4>
+                        <p>Students from Engineering, Physical Sciences, Social Sciences, Management, Arts, Education, etc. can contribute something.</p>
                     </div>
-                    <h3>Alex Johnson</h3>
-                    <p>Co-Founder & Project Lead</p>
-                    <div class="member-skills">
-                        <span class="tag">Leadership</span>
-                        <span class="tag">Strategy</span>
-                        <span class="tag">Community</span>
+                    <div class="example-item">
+                        <h4>Becomes a Talent Hub</h4>
+                        <p>Companies, departments, and student organizations will come to PRST when they need solutions.</p>
+                    </div>
+                    <div class="example-item">
+                        <h4>Builds a Tech Culture on Campus</h4>
+                        <p>Hackathons, tech fairs, meetups, mentorship circles, innovation labs.</p>
+                    </div>
+                    <div class="example-item">
+                        <h4>Real Experience for Members</h4>
+                        <p>You don't just learn — you build real products that thousands of students use.</p>
+                    </div>
+                    <div class="example-item">
+                        <h4>Creates a Portfolio for Everyone</h4>
+                        <p>Every project becomes a case study that members can show for jobs, internships, and startups.</p>
                     </div>
                 </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        Member Photo
-                    </div>
-                    <h3>Sarah Chen</h3>
-                    <p>Co-Founder & Tech Lead</p>
-                    <div class="member-skills">
-                        <span class="tag">Web Development</span>
-                        <span class="tag">UX Design</span>
-                        <span class="tag">Project Management</span>
-                    </div>
+            </section>
+            
+            <!-- Examples section -->
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-icon">🎯</div>
+                    <h2 class="section-title">What Campus PRST Can Build</h2>
                 </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        Member Photo
-                    </div>
-                    <h3>Marcus Williams</h3>
-                    <p>Community Outreach</p>
-                    <div class="member-skills">
-                        <span class="tag">Networking</span>
-                        <span class="tag">Communication</span>
-                        <span class="tag">Partnerships</span>
-                    </div>
+                <p style="margin-bottom: 20px;">Examples of potential projects:</p>
+                <div class="examples-grid">
+                    <div class="example-item">Course/Faculty timetable generator</div>
+                    <div class="example-item">Hostel finder & roommate matching system</div>
+                    <div class="example-item">Lost & found platform</div>
+                    <div class="example-item">Complaint/reporting system for campus issues</div>
+                    <div class="example-item">Voting & poll system</div>
+                    <div class="example-item">Clearance or registration assistance AI</div>
+                    <div class="example-item">Department results/attendance systems</div>
+                    <div class="example-item">Smart ID card system</div>
+                    <div class="example-item">Campus events mini-app</div>
+                    <div class="example-item">Online payment tracking system</div>
+                    <div class="example-item">Faculty sports management platform</div>
                 </div>
-                <div class="team-member">
-                    <div class="member-photo">
-                        Member Photo
-                    </div>
-                    <h3>Jamie Rodriguez</h3>
-                    <p>Design Lead</p>
-                    <div class="member-skills">
-                        <span class="tag">UI/UX Design</span>
-                        <span class="tag">Branding</span>
-                        <span class="tag">Visual Design</span>
-                    </div>
+            </section>
+            
+            <!-- Vision section -->
+            <section class="section">
+                <div class="section-header">
+                    <div class="section-icon">🚀</div>
+                    <h2 class="section-title">Long-Term Vision</h2>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Join Section -->
-    <section id="join">
-        <div class="container">
-            <div class="section-title">
-                <h2>Join Our Team</h2>
-            </div>
-            <div class="join-content">
-                <p>We're always looking for passionate individuals who want to make a difference in their community. Whatever your skillset, there's a place for you in PRST.</p>
-                <form class="join-form">
-                    <div class="form-group">
-                        <input type="text" placeholder="Full Name" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Email Address" required>
-                    </div>
-                    <div class="form-group">
-                        <select required>
-                            <option value="" disabled selected>Select Your Skills</option>
-                            <option value="design">Design</option>
-                            <option value="development">Development</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="project-management">Project Management</option>
-                            <option value="community">Community Outreach</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" placeholder="Other Skills">
-                    </div>
-                    <div class="form-group full-width">
-                        <textarea placeholder="Tell us why you want to join PRST and what community problems you're passionate about solving..."></textarea>
-                    </div>
-                    <div class="form-group full-width">
-                        <button type="submit" class="btn">Submit Application</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>PRST</h3>
-                    <p>Problem Solving Team - A community of skilled individuals working together to solve problems in our communities.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                        <a href="#"><i class="fab fa-github"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                    </div>
+                <div class="examples-grid">
+                    <div class="example-item">Become the official innovation arm of the university.</div>
+                    <div class="example-item">Build campus-wide systems that even departments and faculties adopt.</div>
+                    <div class="example-item">Host inter-faculty tech competitions.</div>
+                    <div class="example-item">Provide tech support to student unions.</div>
+                    <div class="example-item">Serve as a launchpad for student startups.</div>
                 </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#about">About</a></li>
-                        <li><a href="#mission">Mission</a></li>
-                        <li><a href="#projects">Projects</a></li>
-                        <li><a href="#team">Team</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Contact</h3>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> contact@prst.org</li>
-                        <li><i class="fas fa-map-marker-alt"></i> Community Hub, City</li>
-                        <li><i class="fas fa-clock"></i> Meetings: Every Saturday 10am</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 PRST - Problem Solving Team. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+            </section>
+        </main>
+        
+        <footer>
+            <p>Campus PRST - Problem Resolution using Software & Technology</p>
+            <p style="margin-top: 10px;">A student-driven innovation and solutions team</p>
+            <p style="margin-top: 20px; font-size: 0.8rem;">&copy; 2023 Campus PRST. All rights reserved.</p>
+        </footer>
+    </div>
 
     <script>
-        // Mobile menu toggle
-        document.querySelector('.mobile-menu').addEventListener('click', function() {
-            document.querySelector('nav ul').classList.toggle('show');
-        });
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+        // Create stars for background
+        function createStars() {
+            const starsContainer = document.getElementById('stars-container');
+            const starCount = 200;
+            
+            for (let i = 0; i < starCount; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
                 
-                const targetId = this.getAttribute('href');
-                if(targetId === '#') return;
+                // Random position
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
                 
-                const targetElement = document.querySelector(targetId);
-                if(targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
+                // Random size
+                const size = Math.random() * 3 + 1;
+                
+                // Random opacity and animation delay
+                const opacity = Math.random() * 0.7 + 0.3;
+                const delay = Math.random() * 5;
+                
+                star.style.left = `${x}%`;
+                star.style.top = `${y}%`;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.opacity = opacity;
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Create moon craters
+        function createMoonCraters() {
+            const moon = document.getElementById('moon');
+            const craterCount = 15;
+            
+            for (let i = 0; i < craterCount; i++) {
+                const crater = document.createElement('div');
+                crater.classList.add('moon-crater');
+                
+                // Random position within moon
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                
+                // Random size
+                const size = Math.random() * 20 + 5;
+                
+                crater.style.left = `${x}%`;
+                crater.style.top = `${y}%`;
+                crater.style.width = `${size}px`;
+                crater.style.height = `${size}px`;
+                
+                moon.appendChild(crater);
+            }
+        }
+        
+        // Initialize everything when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            createMoonCraters();
+            
+            // Add some interactive effects
+            const teamCards = document.querySelectorAll('.team-card, .example-item');
+            teamCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transition = 'transform 0.3s, box-shadow 0.3s';
+                });
+            });
+            
+            // Animate sections on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+            
+            const sections = document.querySelectorAll('.section');
+            sections.forEach(section => {
+                observer.observe(section);
             });
         });
     </script>
